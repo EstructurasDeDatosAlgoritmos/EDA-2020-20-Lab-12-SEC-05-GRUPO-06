@@ -48,6 +48,68 @@ operación seleccionada.
 #  Menu principal
 # ___________________________________________________
 
+def printMenu():
+    print("\n")
+    print("___________________________________________________")
+    print("Bienvenido")
+    print("1- Inicializar Analizador")
+    print("2- Requerimiento 1")
+    print("3- Requerimiento 2")
+    print("4- Requerimiento 3")
+    print("5- Requerimiento 4")
+    print("6- Requerimiento 5 ")
+    print("7- Requerimiento 6")
+    print("0- Salir")
+    print("___________________________________________________")
+
+def opcion2():
+    return None
+def opcion3():
+    return None
+def opcion4():
+    return None
+def opcion5():
+    return None
+def opcion6():
+    return None
+def opcion7():
+    return None
+
 """
 Menu principal
 """
+while True:
+    printMenu()
+    inputs = input('Seleccione una opción para continuar\n>')
+
+    if int(inputs[0]) == 1:
+        print("\nInicializando....")
+        cont = controller.init()
+
+    elif int(inputs[0]) == 2:
+        executiontime = timeit.timeit(opcion2, number=1)
+        print("Tiempo de ejecución: " + str(executiontime))
+
+    elif int(inputs[0]) == 3:
+        executiontime = timeit.timeit(opcion3, number=1)
+        print("Tiempo de ejecución: " + str(executiontime))
+
+    elif int(inputs[0]) == 4:
+        executiontime = timeit.timeit(opcion4, number=1)
+        print("Tiempo de ejecución: " + str(executiontime))
+
+    elif int(inputs[0]) == 5:
+        executiontime = timeit.timeit(opcion5, number=1)
+        print("Tiempo de ejecución: " + str(executiontime))
+
+    elif int(inputs[0]) == 6:
+        executiontime = timeit.timeit(opcion6, number=1)
+        print("Tiempo de ejecución: " + str(executiontime))
+
+    elif int(inputs[0]) == 7:
+        executiontime = timeit.timeit(opcion7, number=1)
+        print("Tiempo de ejecución: " + str(executiontime))
+
+    else:
+        sys.exit(0)
+sys.exit(0)
