@@ -70,6 +70,33 @@ def optionTwo():
     sys.setrecursionlimit(recursionLimit)
     print('El limite de recursion se ajusta a: ' + str(recursionLimit))
 
+def printMenu():
+    print("\n")
+    print("___________________________________________________")
+    print("Bienvenido")
+    print("1- Inicializar Analizador")
+    print("2- Requerimiento 1")
+    print("3- Requerimiento 2")
+    print("4- Requerimiento 3")
+    print("5- Requerimiento 4")
+    print("6- Requerimiento 5 ")
+    print("7- Requerimiento 6")
+    print("0- Salir")
+    print("___________________________________________________")
+
+def opcion2():
+    return None
+def opcion3():
+    return None
+def opcion4():
+    return None
+def opcion5():
+    return None
+def opcion6():
+    return None
+def opcion7():
+    return None
+
 """
 Menu principal
 """
