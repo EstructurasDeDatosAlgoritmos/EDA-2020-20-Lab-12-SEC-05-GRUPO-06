@@ -43,7 +43,6 @@ de creacion y consulta sobre las estructuras de datos.
 # -----------------------------------------------------
 def newCitibike():
     """ Inicializa el analizador
-
    stops: Tabla de hash para guardar los vertices del grafo
    connections: Grafo para representar las rutas entre estaciones
    components: Almacena la informacion de los componentes conectados
@@ -104,7 +103,33 @@ def addConnection(citibike, origin, destination, duration):
 # ==============================
 # Funciones de consulta
 # ==============================
+def componentesConectados(analyzer):
+    """
+    Calcula los componentes conectados del grafo
+    Se utiliza el algoritmo de Kosaraju
+    """
+    analyzer['components'] = scc.KosarajuSCC(analyzer['graph'])
+    return scc.connectedComponents(analyzer['components'])
 
+def estacionesConectadas(analyzer, estacion1, estacion2):
+    """
+    Calcula si 2 estaciones estan fuertemente conectadas
+    Se utiliza el algoritmo de Kosaraju
+    """
+    analyzer['components'] = scc.KosarajuSCC(analyzer['graph'])
+    return scc.stronglyConnected(analyzer['components'], estacion1, estacion2)
+
+def totalestaciones(analyzer):
+    """
+    Retorna el total de estaciones (vertices) del grafo
+    """
+    return gr.numVertices(analyzer['graph'])
+
+def totalConnections(analyzer):
+    """
+    Retorna el total arcos del grafo
+    """
+    return gr.numEdges(analyzer['graph'])
 # ==============================
 # Funciones Helper
 # ==============================

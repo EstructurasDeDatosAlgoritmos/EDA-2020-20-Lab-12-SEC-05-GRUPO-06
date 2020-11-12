@@ -45,9 +45,13 @@ operación seleccionada.
 # ___________________________________________________
 #  Variables
 # ___________________________________________________
-# servicefile="201801-1-citibike-tripdata.csv"
-# servicefile="201801-1-citibike-tripdata.csv"
-servicefile='201801-3-citibike-tripdata.csv'
+#servicefile = "201801-1-citibike-tripdata.csv"
+#servicefile="201801-2-citibike-tripdata.csv"
+#servicefile = '201801-3-citibike-tripdata.csv'
+servicefile = '201801-4-citibike-tripdata.csv'
+
+recursionLimit = 20000
+
 # ___________________________________________________
 #  Menu principal
 # ___________________________________________________
@@ -58,43 +62,35 @@ def printMenu():
     print("1- Inicializar Analizador")
     print("2- Cargar información de Citibike")
     print("3- Calcular componentes conectados")
+    print("0- Salir")
 
 def optionTwo():
     print("\nCargando información de Citibike ....")
     controller.loadFile(cont, servicefile)
-    # numedges = controller.totalConnections(cont)
-    # numvertex = controller.totalStops(cont)
-    # print('Numero de vertices: ' + str(numvertex))
-    # print('Numero de arcos: ' + str(numedges))
+    numedges = controller.totalConnections(cont)
+    numvertex = controller.totalestaciones(cont)
+    print('Numero de vertices: ' + str(numvertex))
+    print('Numero de arcos: ' + str(numedges))
+    print('Número de componentes conectados: ' + str(controller.componentesConectados(cont)))
     print('El limite de recursion actual: ' + str(sys.getrecursionlimit()))
     sys.setrecursionlimit(recursionLimit)
     print('El limite de recursion se ajusta a: ' + str(recursionLimit))
 
-def printMenu():
-    print("\n")
-    print("___________________________________________________")
-    print("Bienvenido")
-    print("1- Inicializar Analizador")
-    print("2- Requerimiento 1")
-    print("3- Requerimiento 2")
-    print("4- Requerimiento 3")
-    print("5- Requerimiento 4")
-    print("6- Requerimiento 5 ")
-    print("7- Requerimiento 6")
-    print("0- Salir")
-    print("___________________________________________________")
+def optionThree():
+    conectados = controller.estacionesConectadas(cont, estacion1, estacion2)
+    if conectados == True:
+        print(str(estacion1) + " y " + str(estacion2) + " estan fuertemente conectados")
+    else:
+        print(str(estacion1) + " y " + str(estacion2) + " no estan fuertemente conectados")
+    return None
 
-def opcion2():
+def optionFour():
     return None
-def opcion3():
+def optionFive():
     return None
-def opcion4():
+def optionSix():
     return None
-def opcion5():
-    return None
-def opcion6():
-    return None
-def opcion7():
+def optionSeven():
     return None
 
 """
@@ -114,6 +110,8 @@ while True:
         print("Tiempo de ejecución: " + str(executiontime))
 
     elif int(inputs[0]) == 3:
+        estacion1 = input("Ingrese la primera estación:\n ")
+        estacion2 = input("Ingrese la segunda estación:\n ")
         executiontime = timeit.timeit(optionThree, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
 

@@ -76,8 +76,26 @@ def loadFile(citibike, tripfile):
 #  Funciones para consultas
 # ___________________________________________________
 
-def connectedComponents(analyzer):
+def componentesConectados(analyzer):
     """
     Numero de componentes fuertemente conectados
     """
-    return model.connectedComponents(analyzer)
+    return model.componentesConectados(analyzer)
+
+def estacionesConectadas(analyzer, estacion1, estacion2):
+    """
+    Numero de componentes fuertemente conectados
+    """
+    return model.estacionesConectadas(analyzer, estacion1, estacion2)
+
+def totalestaciones(analyzer):
+    """
+    Total de estaciones
+    """
+    return model.totalestaciones(analyzer)
+
+def totalConnections(analyzer):
+    """
+    Total de enlaces 
+    """
+    return model.totalConnections(analyzer)
