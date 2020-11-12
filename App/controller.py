@@ -41,11 +41,61 @@ recae sobre el controlador.
 # ___________________________________________________
 
 
+def init():
+    """
+    Llama la funcion de inicializacion  del modelo.
+    """
+    # analyzer es utilizado para interactuar con el modelo
+    analyzer = model.newCitibike()
+    return analyzer
+
+
 # ___________________________________________________
 #  Funciones para la carga de datos y almacenamiento
 #  de datos en los modelos
 # ___________________________________________________
+# def loadTrips(citibike):
+#     for filename in os.listdir(cf.data_dir):
+#         if filename.endswith('.csv'):
+#             print('Cargando archivo: ' + filename)
+#             loadFile(analyzer, filename)
+#     return analyzer
+
+def loadFile(citibike, tripfile):
+    """
+    """
+    tripfile = cf.data_dir + tripfile
+    input_file = csv.DictReader(open(tripfile, encoding="utf-8"),
+                                delimiter=",")
+    for trip in input_file:
+        model.addTrip(citibike, trip)
+    return citibike
+
 
 # ___________________________________________________
 #  Funciones para consultas
 # ___________________________________________________
+
+def componentesConectados(analyzer):
+    """
+    Numero de componentes fuertemente conectados
+    """
+    return model.componentesConectados(analyzer)
+
+def estacionesConectadas(analyzer, estacion1, estacion2):
+    """
+    Numero de componentes fuertemente conectados
+    """
+    return model.estacionesConectadas(analyzer, estacion1, estacion2)
+
+def totalestaciones(analyzer):
+    """
+    Total de estaciones
+    """
+    return model.totalestaciones(analyzer)
+
+def totalConnections(analyzer):
+    """
+    Total de enlaces 
+    """
+    return model.totalConnections(analyzer)

@@ -31,6 +31,9 @@ from App import controller
 from DISClib.ADT import stack
 import timeit
 assert config
+import config as cf
+
+
 
 """
 La vista se encarga de la interacción con el usuario.
@@ -42,37 +45,52 @@ operación seleccionada.
 # ___________________________________________________
 #  Variables
 # ___________________________________________________
+#servicefile = "201801-1-citibike-tripdata.csv"
+#servicefile="201801-2-citibike-tripdata.csv"
+#servicefile = '201801-3-citibike-tripdata.csv'
+servicefile = '201801-4-citibike-tripdata.csv'
 
+recursionLimit = 20000
 
 # ___________________________________________________
 #  Menu principal
 # ___________________________________________________
-
 def printMenu():
     print("\n")
-    print("___________________________________________________")
+    print("*******************************************")
     print("Bienvenido")
     print("1- Inicializar Analizador")
-    print("2- Requerimiento 1")
-    print("3- Requerimiento 2")
-    print("4- Requerimiento 3")
-    print("5- Requerimiento 4")
-    print("6- Requerimiento 5 ")
-    print("7- Requerimiento 6")
+    print("2- Cargar información de Citibike")
+    print("3- Calcular componentes conectados")
     print("0- Salir")
-    print("___________________________________________________")
 
-def opcion2():
+def optionTwo():
+    print("\nCargando información de Citibike ....")
+    controller.loadFile(cont, servicefile)
+    numedges = controller.totalConnections(cont)
+    numvertex = controller.totalestaciones(cont)
+    print('Numero de vertices: ' + str(numvertex))
+    print('Numero de arcos: ' + str(numedges))
+    print('Número de componentes conectados: ' + str(controller.componentesConectados(cont)))
+    print('El limite de recursion actual: ' + str(sys.getrecursionlimit()))
+    sys.setrecursionlimit(recursionLimit)
+    print('El limite de recursion se ajusta a: ' + str(recursionLimit))
+
+def optionThree():
+    conectados = controller.estacionesConectadas(cont, estacion1, estacion2)
+    if conectados == True:
+        print(str(estacion1) + " y " + str(estacion2) + " estan fuertemente conectados")
+    else:
+        print(str(estacion1) + " y " + str(estacion2) + " no estan fuertemente conectados")
     return None
-def opcion3():
+
+def optionFour():
     return None
-def opcion4():
+def optionFive():
     return None
-def opcion5():
+def optionSix():
     return None
-def opcion6():
-    return None
-def opcion7():
+def optionSeven():
     return None
 
 """
@@ -84,30 +102,37 @@ while True:
 
     if int(inputs[0]) == 1:
         print("\nInicializando....")
+        # cont es el controlador que se usará de acá en adelante
         cont = controller.init()
 
     elif int(inputs[0]) == 2:
-        executiontime = timeit.timeit(opcion2, number=1)
+        executiontime = timeit.timeit(optionTwo, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
 
     elif int(inputs[0]) == 3:
-        executiontime = timeit.timeit(opcion3, number=1)
+        estacion1 = input("Ingrese la primera estación:\n ")
+        estacion2 = input("Ingrese la segunda estación:\n ")
+        executiontime = timeit.timeit(optionThree, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
 
     elif int(inputs[0]) == 4:
-        executiontime = timeit.timeit(opcion4, number=1)
+        msg = "Estación Base: BusStopCode-ServiceNo (Ej: 75009-10): "
+        initialStation = input(msg)
+        executiontime = timeit.timeit(optionFour, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
 
     elif int(inputs[0]) == 5:
-        executiontime = timeit.timeit(opcion5, number=1)
+        destStation = input("Estación destino (Ej: 15151-10): ")
+        executiontime = timeit.timeit(optionFive, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
 
     elif int(inputs[0]) == 6:
-        executiontime = timeit.timeit(opcion6, number=1)
+        destStation = input("Estación destino (Ej: 15151-10): ")
+        executiontime = timeit.timeit(optionSix, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
 
     elif int(inputs[0]) == 7:
-        executiontime = timeit.timeit(opcion7, number=1)
+        executiontime = timeit.timeit(optionSeven, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
 
     else:
