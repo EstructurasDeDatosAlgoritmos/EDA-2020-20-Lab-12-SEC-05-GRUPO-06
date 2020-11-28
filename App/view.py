@@ -47,9 +47,14 @@ operación seleccionada.
 # ___________________________________________________
 #  Variables
 # ___________________________________________________
-servicefile="201801-2-citibike-tripdata.csv"
-# servicefile="201801-1-citibike-tripdata.csv"
-# servicefile='201801-3-citibike-tripdata.csv'
+
+servicefile = "201801-1-citibike-tripdata.csv"
+#servicefile="201801-2-citibike-tripdata.csv"
+#servicefile = '201801-3-citibike-tripdata.csv'
+#servicefile = '201801-4-citibike-tripdata.csv'
+
+recursionLimit = 20000
+
 # ___________________________________________________
 #  Menu principal
 # ___________________________________________________
@@ -61,18 +66,21 @@ def printMenu():
     print("2- Cargar información de Citibike")
     print("3- Calcular componentes conectados")
     print("4- Calcular rutas circulares")
+    print("5- Calcular estaciones criticas")
+    print("0- Salir")
 
 def optionTwo():
     print("\nCargando información de Citibike ....")
-    controller.loadFile(cont,servicefile)
-    # numedges = controller.totalConnections(cont)
-    # numvertex = controller.totalStops(cont)
-    # print('Numero de vertices: ' + str(numvertex))
-    # print('Numero de arcos: ' + str(numedges))
-    # print('El limite de recursion actual: ' + str(sys.getrecursionlimit()))
-    # sys.setrecursionlimit(recursionLimit)
-    # print('El limite de recursion se ajusta a: ' + str(recursionLimit))
-    #D:\SEGUNDO SEMESTRE\ESTRUCTURA DE DATOS Y ALGORITMOS\LAB 12\EDA-2020-20-Lab-12-SEC-05-GRUPO-06\Data
+    controller.loadFile(cont, servicefile)
+    numedges = controller.totalConnections(cont)
+    numvertex = controller.totalestaciones(cont)
+    print('Numero de vertices: ' + str(numvertex))
+    print('Numero de arcos: ' + str(numedges))
+    print('Número de componentes conectados: ' + str(controller.componentesConectados(cont)))
+    print('El limite de recursion actual: ' + str(sys.getrecursionlimit()))
+    sys.setrecursionlimit(recursionLimit)
+    print('El limite de recursion se ajusta a: ' + str(recursionLimit))
+
 
 def optionThree():
     conectados = controller.estacionesConectadas(cont, estacion1, estacion2)
@@ -80,6 +88,22 @@ def optionThree():
         print(str(estacion1) + " y " + str(estacion2) + " estan fuertemente conectados")
     else:
         print(str(estacion1) + " y " + str(estacion2) + " no estan fuertemente conectados")
+    return None
+
+def optionFour():
+    return None
+def optionFive():
+    controller.ordenar_estaciones(cont)
+    Llegada_criticas = controller.estacionL_criticas(cont)
+    Salida_criticas = controller.estacionS_criticas(cont)
+    General_criticas = controller.estacionG_criticas(cont)
+    print("Estaciones de llegada criticas: " + Llegada_criticas)
+    print("Estaciones de salida criticas: " + Salida_criticas)
+    print("Estaciones menos usadas: " + General_criticas)
+    
+def optionSix():
+    return None
+def optionSeven():
     return None
 
 def optionFour():
@@ -132,7 +156,6 @@ while True:
         # print("Tiempo de ejecución: " + str(executiontime))
 
     elif int(inputs[0]) == 5:
-        destStation = input("Estación destino (Ej: 15151-10): ")
         executiontime = timeit.timeit(optionFive, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
 

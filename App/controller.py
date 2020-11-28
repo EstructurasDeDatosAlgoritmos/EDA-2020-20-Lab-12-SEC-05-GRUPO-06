@@ -71,8 +71,11 @@ def loadFile(citibike, tripfile):
                                 delimiter=",")
     for trip in input_file:
         model.addTrip(citibike, trip)
+        model.addTripMap(citibike,trip)
     return citibike
 
+def ordenar_estaciones(citibike):
+    return model.ordenar_estaciones(citibike)
 
 # ___________________________________________________
 #  Funciones para consultas
@@ -88,6 +91,7 @@ def estacionesConectadas(analyzer, estacion1, estacion2):
     """
     Numero de componentes fuertemente conectados
     """
+
     return model.estacionesConectadas(analyzer, estacion1, estacion2)
 
 def totalestaciones(analyzer):
@@ -106,3 +110,11 @@ def encontrar_ciclos(analyzer,origen,tiempo1,tiempo2):
 
     return model.encontrar_ciclos(analyzer,origen,tiempo1,tiempo2)
     
+def estacionS_criticas (analyzer):
+    return model.estacionS_criticas(analyzer)
+
+def estacionL_criticas (analyzer):
+    return model.estacionL_criticas(analyzer)
+
+def estacionG_criticas(analyzer):
+    return model.estacionG_criticas(analyzer)
