@@ -72,6 +72,8 @@ def loadFile(citibike, tripfile):
         model.addTripMap(citibike,trip)
     return citibike
 
+def ordenar_estaciones(citibike):
+    return model.ordenar_estaciones(citibike)
 
 # ___________________________________________________
 #  Funciones para consultas
@@ -100,3 +102,12 @@ def totalConnections(analyzer):
     Total de enlaces 
     """
     return model.totalConnections(analyzer)
+
+def estacionS_criticas (analyzer):
+    return model.estacionS_criticas(analyzer)
+
+def estacionL_criticas (analyzer):
+    return model.estacionL_criticas(analyzer)
+
+def estacionG_criticas(analyzer):
+    return model.estacionG_criticas(analyzer)
