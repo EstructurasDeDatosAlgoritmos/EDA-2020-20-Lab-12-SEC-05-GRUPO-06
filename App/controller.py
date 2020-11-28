@@ -69,6 +69,7 @@ def loadFile(citibike, tripfile):
                                 delimiter=",")
     for trip in input_file:
         model.addTrip(citibike, trip)
+        model.addTripMap(citibike,trip)
     return citibike
 
 

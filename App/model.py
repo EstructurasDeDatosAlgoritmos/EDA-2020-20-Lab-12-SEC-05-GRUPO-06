@@ -25,6 +25,7 @@
  """
 import config
 from DISClib.ADT.graph import gr
+from DISClib.ADT import orderedmap as om
 from DISClib.ADT import map as m
 from DISClib.ADT import list as lt
 from DISClib.DataStructures import listiterator as it
@@ -51,20 +52,25 @@ def newCitibike():
     """
     try:
         analyzer = {
-                    'stations': None,
+                    'stationsS': None,
                     'graph': None,
                     'components': None,
-                    'paths': None
+                    'stationsL': None,
+                    'ordenados': None
                     }
 
-        analyzer['stations'] = m.newMap(numelements=14000,
+        analyzer['stationsS'] = m.newMap(numelements=14000,
                                       maptype='PROBING',
                                       comparefunction=compareStopIds)
-
+        analyzer['stationsL'] = m.newMap(numelements=14000,
+                                      maptype='PROBING',
+                                      comparefunction=compareStopIds)
         analyzer['graph'] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=True,
                                               size=14000,
-                                              comparefunction=compareStopIds)
+                                              comparefunction=compareStopIds)   
+        analyzer['ordenados'] = om.newMap(omaptype='BST',
+                                      comparefunction=compareStopIds)
         return analyzer
     except Exception as exp:
         error.reraise(exp, 'model:newAnalyzer')
@@ -80,6 +86,28 @@ def addTrip(citibike, trip):
     addStation(citibike, origin)
     addStation(citibike, destination)
     addConnection(citibike, origin, destination, duration)
+
+def addTripMap(citibike, trip):
+    mapS = citibike['stationsS']
+    mapL = citibike['stationsL']
+    id_salida = trip['start station id']
+    id_llegada = trip['end station id']
+    name_salida = trip['start station name']
+    name_llegada = trip['end station name']
+    vi = 1
+    if m.contains(mapS, id_salida):
+        valors = (m.get(mapS, id_salida)) 
+        valorsr = int(valors["value"]) + 1
+        m.put(mapS, id_salida, (name_salida,valorsr))
+    else:
+        m.put(mapS, id_salida, vi)
+    
+    if m.contains(mapL, id_llegada):
+        valorl = (m.get(mapL, id_llegada))
+        valorlr = int(valorl["value"]) + 1
+        m.put(mapL, id_llegada, valorlr)
+    else:
+        m.put(mapL, id_llegada, vi)
 
 def addStation(citibike, stationid):
     """

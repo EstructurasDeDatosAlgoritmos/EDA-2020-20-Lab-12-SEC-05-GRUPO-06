@@ -45,10 +45,10 @@ operación seleccionada.
 # ___________________________________________________
 #  Variables
 # ___________________________________________________
-#servicefile = "201801-1-citibike-tripdata.csv"
+servicefile = "201801-1-citibike-tripdata.csv"
 #servicefile="201801-2-citibike-tripdata.csv"
 #servicefile = '201801-3-citibike-tripdata.csv'
-servicefile = '201801-4-citibike-tripdata.csv'
+#servicefile = '201801-4-citibike-tripdata.csv'
 
 recursionLimit = 20000
 
@@ -62,6 +62,7 @@ def printMenu():
     print("1- Inicializar Analizador")
     print("2- Cargar información de Citibike")
     print("3- Calcular componentes conectados")
+    print("5- Calcular estaciones criticas")
     print("0- Salir")
 
 def optionTwo():
