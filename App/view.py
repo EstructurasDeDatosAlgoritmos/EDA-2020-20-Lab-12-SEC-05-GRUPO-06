@@ -31,7 +31,9 @@ from App import controller
 from DISClib.ADT import stack
 import timeit
 assert config
-import config as cf
+from DISClib.DataStructures import listiterator as it
+from DISClib.ADT import list as lt
+from DISClib.ADT import queue as que
 
 
 
@@ -45,10 +47,11 @@ operación seleccionada.
 # ___________________________________________________
 #  Variables
 # ___________________________________________________
-#servicefile = "201801-1-citibike-tripdata.csv"
+
+servicefile = "201801-1-citibike-tripdata.csv"
 #servicefile="201801-2-citibike-tripdata.csv"
 #servicefile = '201801-3-citibike-tripdata.csv'
-servicefile = '201801-4-citibike-tripdata.csv'
+#servicefile = '201801-4-citibike-tripdata.csv'
 
 recursionLimit = 20000
 
@@ -62,6 +65,9 @@ def printMenu():
     print("1- Inicializar Analizador")
     print("2- Cargar información de Citibike")
     print("3- Calcular componentes conectados")
+    print("4- Calcular rutas circulares")
+    print("5- Calcular estaciones criticas")
+    print("6- Caulcular ruta turística por resistencia")
     print("0- Salir")
 
 def optionTwo():
@@ -76,6 +82,7 @@ def optionTwo():
     sys.setrecursionlimit(recursionLimit)
     print('El limite de recursion se ajusta a: ' + str(recursionLimit))
 
+
 def optionThree():
     conectados = controller.estacionesConectadas(cont, estacion1, estacion2)
     if conectados == True:
@@ -86,13 +93,53 @@ def optionThree():
 
 def optionFour():
     return None
+
 def optionFive():
-    return None
+    controller.ordenar_estaciones(cont)
+    Llegada_criticas = controller.estacionL_criticas(cont)
+    Salida_criticas = controller.estacionS_criticas(cont)
+    General_criticas = controller.estacionG_criticas(cont)
+    print("Estaciones de llegada criticas: " + Llegada_criticas)
+    print("Estaciones de salida criticas: " + Salida_criticas)
+    print("Estaciones menos usadas: " + General_criticas)
+    
 def optionSix():
-    return None
+    lista=controller.encontrar_ciclos(cont,origen,tiempo1,tiempo2)
+    iterador=it.newIterator(lista)
+    contador=0
+    print("se encontraron: ")
+    while it.hasNext(iterador):
+        contador+=1
+        tupla=it.next(iterador)
+        ciclos=tupla[0]
+        costo=tupla[1]
+        while not que.isEmpty(ciclos):
+            print(que.dequeue(ciclos))
+        print("el tiempo estimado es: "+ str(round(costo))+" minutos\n")
+
+
 def optionSeven():
     return None
 
+def optionFour():
+    lista=controller.encontrar_ciclos(cont,origen,tiempo1,tiempo2)
+    iterador=it.newIterator(lista)
+    contador=0
+    print("se encontraron: "+str(lt.size(lista))+" rutas circulares.")
+    while it.hasNext(iterador):
+        contador+=1
+        tupla=it.next(iterador)
+        ciclos=tupla[0]
+        costo=tupla[1]
+        print(str(contador)+".\n")
+        while not que.isEmpty(ciclos):
+            print(que.dequeue(ciclos))
+        print("el tiempo estimado es: "+ str(round(costo))+" minutos\n")
+
+
+
+# --------------------------------------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------------------------------------
 """
 Menu principal
 """
@@ -113,16 +160,17 @@ while True:
         estacion1 = input("Ingrese la primera estación:\n ")
         estacion2 = input("Ingrese la segunda estación:\n ")
         executiontime = timeit.timeit(optionThree, number=1)
+        a=cont["components"]
         print("Tiempo de ejecución: " + str(executiontime))
 
     elif int(inputs[0]) == 4:
-        msg = "Estación Base: BusStopCode-ServiceNo (Ej: 75009-10): "
-        initialStation = input(msg)
+        origen = input("Estación Base: ")
+        tiempo1=int(input("Igrese el minimo de tiempo: "))
+        tiempo2=int(input("Ingrese el maximo de tiempo: "))
         executiontime = timeit.timeit(optionFour, number=1)
-        print("Tiempo de ejecución: " + str(executiontime))
+        # print("Tiempo de ejecución: " + str(executiontime))
 
     elif int(inputs[0]) == 5:
-        destStation = input("Estación destino (Ej: 15151-10): ")
         executiontime = timeit.timeit(optionFive, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
 
