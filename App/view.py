@@ -175,10 +175,11 @@ while True:
         print("Tiempo de ejecución: " + str(executiontime))
 
     elif int(inputs[0]) == 6:
-        destStation = input("Estación destino (Ej: 15151-10): ")
+        estacion = input("Ingrese la estación: ")
+        tiempo = input("Duración estimada: ")
         executiontime = timeit.timeit(optionSix, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
-
+        
     elif int(inputs[0]) == 7:
         executiontime = timeit.timeit(optionSeven, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
