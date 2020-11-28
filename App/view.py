@@ -47,7 +47,7 @@ operación seleccionada.
 # ___________________________________________________
 #  Variables
 # ___________________________________________________
-servicefile="201801-1-citibike-tripdata.csv"
+servicefile="201801-2-citibike-tripdata.csv"
 # servicefile="201801-1-citibike-tripdata.csv"
 # servicefile='201801-3-citibike-tripdata.csv'
 # ___________________________________________________
@@ -64,7 +64,7 @@ def printMenu():
 
 def optionTwo():
     print("\nCargando información de Citibike ....")
-    controller.loadTrips(cont)
+    controller.loadFile(cont,servicefile)
     # numedges = controller.totalConnections(cont)
     # numvertex = controller.totalStops(cont)
     # print('Numero de vertices: ' + str(numvertex))

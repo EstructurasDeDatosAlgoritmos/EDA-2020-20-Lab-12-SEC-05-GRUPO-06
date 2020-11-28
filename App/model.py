@@ -75,31 +75,15 @@ def newCitibike():
 
 
 # Funciones para agregar informacion al grafo
-def addTrip(trip,maptrip):
+def addTrip(citibike, trip):
     """
     """
-    # maptrip=m.newMap()
-    origin = int(trip['start station id'])
-    destination = int(trip['end station id'])
-    key=(origin,destination)
+    origin = trip['start station id']
+    destination = trip['end station id']
     duration = int(trip['tripduration'])
-    value=duration
-    if m.isEmpty(maptrip):
-        lista=lt.newList()
-        lt.addLast(lista,value)
-        m.put(maptrip,key,lista)
-    else:
-
-        
-        if m.contains(maptrip,key):
-            llave_valor=m.get(maptrip,key)
-            valor=me.getValue(llave_valor)
-            lt.addLast(valor,value) 
-            
-        else:
-            lista=lt.newList()
-            lt.addLast(lista,value)
-            m.put(maptrip,key,lista)
+    addStation(citibike, origin)
+    addStation(citibike, destination)
+    addConnection(citibike, origin, destination, duration)
                    
 
 

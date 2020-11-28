@@ -55,22 +55,23 @@ def init():
 #  Funciones para la carga de datos y almacenamiento
 #  de datos en los modelos
 # ___________________________________________________
-def loadTrips(analyzer):
-    maptrip=m.newMap()
+def loadTrips(citibike):
+
     for filename in os.listdir(cf.data_dir):
         if filename.endswith('.csv'):
             print('Cargando archivo: ' + filename)
-            loadFile(filename,maptrip)
+            loadFile(analyzer, filename)
     return analyzer
 
-def loadFile(tripfile,maptrip):
+def loadFile(citibike, tripfile):
     """
     """
-    tripfile = os.path.join(cf.data_dir, tripfile)
+    tripfile = cf.data_dir + tripfile
     input_file = csv.DictReader(open(tripfile, encoding="utf-8"),
                                 delimiter=",")
     for trip in input_file:
-        model.addTrip(trip,maptrip)
+        model.addTrip(citibike, trip)
+    return citibike
 
 
 # ___________________________________________________
