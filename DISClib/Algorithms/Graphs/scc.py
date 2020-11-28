@@ -128,6 +128,9 @@ def connectedComponents(scc):
     except Exception as exp:
         error.reraise(exp, 'scc:components')
 
+def id(scc,vertice):
+    return map.get(scc['idscc'], vertice)['value']
+
 # --------------------------------------------------
 #              Funciones Auxiliares
 # --------------------------------------------------
