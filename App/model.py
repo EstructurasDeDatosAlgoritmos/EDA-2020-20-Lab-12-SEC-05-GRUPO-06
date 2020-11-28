@@ -28,7 +28,10 @@ from DISClib.ADT.graph import gr
 from DISClib.ADT import orderedmap as om
 from DISClib.ADT import map as m
 from DISClib.ADT import list as lt
+from DISClib.ADT import stack as stk
+from DISClib.ADT import queue as que
 from DISClib.DataStructures import listiterator as it
+from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Graphs import scc
 from DISClib.Algorithms.Graphs import dijsktra as djk
 from DISClib.Utils import error as error
@@ -94,6 +97,15 @@ def addTrip(citibike, trip):
     addStation(citibike, origin)
     addStation(citibike, destination)
     addConnection(citibike, origin, destination, duration)
+                   
+
+
+
+
+# def loadTrips():
+#     addStation(citibike, origin)
+#     addStation(citibike, destination)
+#     addConnection(citibike, origin, destination, duration)
 
 def addTripMap(citibike, trip):
     mapS = citibike['stationsS']
@@ -207,6 +219,62 @@ def totalConnections(analyzer):
     Retorna el total arcos del grafo
     """
     return gr.numEdges(analyzer['graph'])
+
+
+#requerimiento 02
+
+def encontrar_componentes(analyzer,origen):
+    lista_scc=lt.newList()
+    Scc=analyzer["components"]
+    grafo=analyzer["graph"]
+    id1=scc.id(Scc,origen)
+    vertices=gr.vertices(grafo)
+    iterador=it.newIterator(vertices)
+    while it.hasNext(iterador):
+        vertice=it.next(iterador)
+        id2=scc.id(Scc,vertice)
+        if id1==id2:
+            lt.addLast(lista_scc,vertice)
+    return lista_scc
+
+
+def obtencion_tiempo(cola):
+    copy_cola=cola.copy()
+    sum_arco=0
+    while not que.isEmpty(copy_cola):
+        arco=que.dequeue(copy_cola)["weight"]
+        sum_arco=arco+sum_arco
+    tiempo=(sum_arco/60)+((que.size(copy_cola)-1)*20)
+    return tiempo
+
+def verificacion_tiempo(num,tiempo1,tiempo2):
+    cumple=False
+    if num>=tiempo1 and num<=tiempo2:
+        cumple=True
+    return cumple
+
+
+def encontrar_ciclos(analyzer,origen,tiempo1,tiempo2):
+    lista_final=lt.newList()
+    lista_scc=encontrar_componentes(analyzer,origen)
+    iterador=it.newIterator(lista_scc)
+    grafo=analyzer["graph"]
+    while it.hasNext(iterador):
+        cola=que.newQueue()
+        vertice=it.next(iterador)
+        dks_origen=djk.Dijkstra(grafo,origen)
+        dks_vertice=djk.Dijkstra(grafo,vertice)
+        pila1=djk.pathTo(dks_origen,vertice)
+        pila2=djk.pathTo(dks_vertice,origen)
+        while  not stk.isEmpty(pila1):
+            que.enqueue(cola,stk.pop(pila1))
+        while  not stk.isEmpty(pila2):
+            que.enqueue(cola,stk.pop(pila2))
+        costo=obtencion_tiempo(cola)
+        cumple=verificacion_tiempo(costo,tiempo1,tiempo2)
+        if cumple:
+            lt.addLast(lista_final,(cola,costo))
+    return lista_final
 
 def estacionS_criticas (analyzer):
     Omap = analyzer["ordenadosS"]

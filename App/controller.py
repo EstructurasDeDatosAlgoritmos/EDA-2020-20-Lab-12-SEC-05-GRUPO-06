@@ -27,7 +27,8 @@
 import config as cf
 from App import model
 import csv
-
+import os
+from DISClib.ADT import map as m
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 Existen algunas operaciones en las que se necesita invocar
@@ -54,12 +55,13 @@ def init():
 #  Funciones para la carga de datos y almacenamiento
 #  de datos en los modelos
 # ___________________________________________________
-# def loadTrips(citibike):
-#     for filename in os.listdir(cf.data_dir):
-#         if filename.endswith('.csv'):
-#             print('Cargando archivo: ' + filename)
-#             loadFile(analyzer, filename)
-#     return analyzer
+def loadTrips(citibike):
+
+    for filename in os.listdir(cf.data_dir):
+        if filename.endswith('.csv'):
+            print('Cargando archivo: ' + filename)
+            loadFile(analyzer, filename)
+    return analyzer
 
 def loadFile(citibike, tripfile):
     """
@@ -89,6 +91,7 @@ def estacionesConectadas(analyzer, estacion1, estacion2):
     """
     Numero de componentes fuertemente conectados
     """
+
     return model.estacionesConectadas(analyzer, estacion1, estacion2)
 
 def totalestaciones(analyzer):
@@ -103,6 +106,10 @@ def totalConnections(analyzer):
     """
     return model.totalConnections(analyzer)
 
+def encontrar_ciclos(analyzer,origen,tiempo1,tiempo2):
+
+    return model.encontrar_ciclos(analyzer,origen,tiempo1,tiempo2)
+    
 def estacionS_criticas (analyzer):
     return model.estacionS_criticas(analyzer)
 
