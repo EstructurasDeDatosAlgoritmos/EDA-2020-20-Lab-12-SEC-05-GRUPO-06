@@ -276,6 +276,60 @@ def encontrar_ciclos(analyzer,origen,tiempo1,tiempo2):
             lt.addLast(lista_final,(cola,costo))
     return lista_final
 
+#Requerimiento 4
+
+def componentes(analyzer,origen):
+    lista_scc=lt.newList()
+    Scc=analyzer["components"]
+    grafo=analyzer["graph"]
+    id1=scc.id(Scc,origen)
+    vertices=gr.vertices(grafo)
+    iterador=it.newIterator(vertices)
+    while it.hasNext(iterador):
+        vertice=it.next(iterador)
+        id2=scc.id(Scc,vertice)
+        if id1==id2:
+            lt.addLast(lista_scc,vertice)
+    return lista_scc
+
+def tiempo(cola):
+    copy_cola=cola.copy()
+    sum_arco=0
+    while not que.isEmpty(copy_cola):
+        arco=que.dequeue(copy_cola)["weight"]
+        sum_arco=arco+sum_arco
+    tiempo=(sum_arco/60)+((que.size(copy_cola)-1)*20)
+    return tiempo
+
+def vertiempo(num,tiempo):
+    cumple=False
+    if tiempo <= num:
+        cumple=True
+    return cumple
+
+def encontrar_paradas(analyzer,origen,tiempo):
+    lista_final=lt.newList()
+    lista_scc=encontrar_componentes(analyzer,origen)
+    iterador=it.newIterator(lista_scc)
+    grafo=analyzer["graph"]
+    while it.hasNext(iterador):
+        cola=que.newQueue()
+        vertice=it.next(iterador)
+        dks_origen=djk.Dijkstra(grafo,origen)
+        dks_vertice=djk.Dijkstra(grafo,vertice)
+        pila1=djk.pathTo(dks_origen,vertice)
+        pila2=djk.pathTo(dks_vertice,origen)
+        while  not stk.isEmpty(pila1):
+            que.enqueue(cola,stk.pop(pila1))
+        while  not stk.isEmpty(pila2):
+            que.enqueue(cola,stk.pop(pila2))
+        costo=obtencion_tiempo(cola)
+        cumple=verificacion_tiempo(costo,tiempo)
+        if cumple:
+            lt.addLast(lista_final,(cola,costo))
+    return lista_final
+
+
 def estacionS_criticas (analyzer):
     Omap = analyzer["ordenadosS"]
     Cont = 0

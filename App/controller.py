@@ -109,6 +109,8 @@ def totalConnections(analyzer):
 def encontrar_ciclos(analyzer,origen,tiempo1,tiempo2):
 
     return model.encontrar_ciclos(analyzer,origen,tiempo1,tiempo2)
+
+
     
 def estacionS_criticas (analyzer):
     return model.estacionS_criticas(analyzer)
