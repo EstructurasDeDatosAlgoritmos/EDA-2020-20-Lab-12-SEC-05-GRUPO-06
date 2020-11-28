@@ -27,7 +27,8 @@
 import config as cf
 from App import model
 import csv
-
+import os
+from DISClib.ADT import map as m
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 Existen algunas operaciones en las que se necesita invocar
@@ -54,30 +55,53 @@ def init():
 #  Funciones para la carga de datos y almacenamiento
 #  de datos en los modelos
 # ___________________________________________________
-# def loadTrips(citibike):
-#     for filename in os.listdir(cf.data_dir):
-#         if filename.endswith('.csv'):
-#             print('Cargando archivo: ' + filename)
-#             loadFile(analyzer, filename)
-#     return analyzer
+def loadTrips(analyzer):
+    maptrip=m.newMap()
+    for filename in os.listdir(cf.data_dir):
+        if filename.endswith('.csv'):
+            print('Cargando archivo: ' + filename)
+            loadFile(filename,maptrip)
+    return analyzer
 
-def loadFile(citibike, tripfile):
+def loadFile(tripfile,maptrip):
     """
     """
-    tripfile = cf.data_dir + tripfile
+    tripfile = os.path.join(cf.data_dir, tripfile)
     input_file = csv.DictReader(open(tripfile, encoding="utf-8"),
                                 delimiter=",")
     for trip in input_file:
-        model.addTrip(citibike, trip)
-    return citibike
+        model.addTrip(trip,maptrip)
 
 
 # ___________________________________________________
 #  Funciones para consultas
 # ___________________________________________________
 
-def connectedComponents(analyzer):
+def componentesConectados(analyzer):
     """
     Numero de componentes fuertemente conectados
     """
-    return model.connectedComponents(analyzer)
+    return model.componentesConectados(analyzer)
+
+def estacionesConectadas(analyzer, estacion1, estacion2):
+    """
+    Numero de componentes fuertemente conectados
+    """
+    return model.estacionesConectadas(analyzer, estacion1, estacion2)
+
+def totalestaciones(analyzer):
+    """
+    Total de estaciones
+    """
+    return model.totalestaciones(analyzer)
+
+def totalConnections(analyzer):
+    """
+    Total de enlaces 
+    """
+    return model.totalConnections(analyzer)
+
+def encontrar_ciclos(analyzer,origen,tiempo1,tiempo2):
+
+    return model.encontrar_ciclos(analyzer,origen,tiempo1,tiempo2)
+    
