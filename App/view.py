@@ -88,7 +88,14 @@ def optionThree():
 def optionFour():
     return None
 def optionFive():
-    return None
+    controller.ordenar_estaciones(cont)
+    Llegada_criticas = controller.estacionL_criticas(cont)
+    Salida_criticas = controller.estacionS_criticas(cont)
+    General_criticas = controller.estacionG_criticas(cont)
+    print("Estaciones de llegada criticas: " + Llegada_criticas)
+    print("Estaciones de salida criticas: " + Salida_criticas)
+    print("Estaciones menos usadas: " + General_criticas)
+    
 def optionSix():
     return None
 def optionSeven():
@@ -123,7 +130,6 @@ while True:
         print("Tiempo de ejecución: " + str(executiontime))
 
     elif int(inputs[0]) == 5:
-        destStation = input("Estación destino (Ej: 15151-10): ")
         executiontime = timeit.timeit(optionFive, number=1)
         print("Tiempo de ejecución: " + str(executiontime))
 

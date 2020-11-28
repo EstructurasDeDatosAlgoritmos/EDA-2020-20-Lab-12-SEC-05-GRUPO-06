@@ -56,7 +56,8 @@ def newCitibike():
                     'graph': None,
                     'components': None,
                     'stationsL': None,
-                    'ordenados': None
+                    'ordenadosS': None,
+                    'ordenadosL': None
                     }
 
         analyzer['stationsS'] = m.newMap(numelements=14000,
@@ -65,12 +66,19 @@ def newCitibike():
         analyzer['stationsL'] = m.newMap(numelements=14000,
                                       maptype='PROBING',
                                       comparefunction=compareStopIds)
+        analyzer['stationsG'] = m.newMap(numelements=14000,
+                                      maptype='PROBING',
+                                      comparefunction=compareStopIds)                              
         analyzer['graph'] = gr.newGraph(datastructure='ADJ_LIST',
                                               directed=True,
                                               size=14000,
                                               comparefunction=compareStopIds)   
-        analyzer['ordenados'] = om.newMap(omaptype='BST',
-                                      comparefunction=compareStopIds)
+        analyzer['ordenadosS'] = om.newMap(omaptype='RBT',
+                                      comparefunction=compareIds)
+        analyzer['ordenadosL'] = om.newMap(omaptype='RBT',
+                                      comparefunction=compareIds)
+        analyzer['ordenadosG'] = om.newMap(omaptype='RBT',
+                                      comparefunction=compareIds)
         return analyzer
     except Exception as exp:
         error.reraise(exp, 'model:newAnalyzer')
@@ -90,24 +98,39 @@ def addTrip(citibike, trip):
 def addTripMap(citibike, trip):
     mapS = citibike['stationsS']
     mapL = citibike['stationsL']
-    id_salida = trip['start station id']
-    id_llegada = trip['end station id']
+    mapG = citibike['stationsG']
     name_salida = trip['start station name']
     name_llegada = trip['end station name']
     vi = 1
-    if m.contains(mapS, id_salida):
-        valors = (m.get(mapS, id_salida)) 
-        valorsr = int(valors["value"]) + 1
-        m.put(mapS, id_salida, (name_salida,valorsr))
-    else:
-        m.put(mapS, id_salida, vi)
     
-    if m.contains(mapL, id_llegada):
-        valorl = (m.get(mapL, id_llegada))
-        valorlr = int(valorl["value"]) + 1
-        m.put(mapL, id_llegada, valorlr)
+    #Salida
+    if m.contains(mapS, name_salida):
+        valors = (m.get(mapS, name_salida)) 
+        valorsr = int(valors["value"]) + 1
+        m.put(mapS, name_salida, valorsr)
     else:
-        m.put(mapL, id_llegada, vi)
+        m.put(mapS, name_salida, vi)
+    #Llegada
+    if m.contains(mapL, name_llegada):
+        valorl = (m.get(mapL, name_llegada))
+        valorlr = int(valorl["value"]) + 1
+        m.put(mapL, name_llegada, valorlr)
+    else:
+        m.put(mapL, name_llegada, vi)
+    #General
+    if m.contains(mapG, name_salida):
+        valorgs = (m.get(mapG, name_salida))
+        valorgsr = int(valorgs["value"]) + 1
+        m.put(mapG, name_salida, valorgsr)
+    else:
+        m.put(mapG, name_salida, vi)
+
+    if m.contains(mapG, name_llegada):
+        valorgl = (m.get(mapG, name_llegada))
+        valorglr = int(valorgl["value"]) + 1
+        m.put(mapG, name_llegada, valorglr)
+    else:
+        m.put(mapG, name_llegada, vi)
 
 def addStation(citibike, stationid):
     """
@@ -126,7 +149,33 @@ def addConnection(citibike, origin, destination, duration):
         gr.addEdge(citibike["graph"], origin, destination, duration)
     return citibike
 
-
+def ordenar_estaciones(citibike):
+    mapS = citibike["stationsS"]
+    OmapS = citibike["ordenadosS"]
+    listaS = m.keySet(mapS)
+    IterS = it.newIterator(listaS)
+    while it.hasNext(IterS):
+        i = it.next(IterS)
+        valorS = m.get(mapS, i)
+        om.put(OmapS, valorS["value"],valorS["key"])
+    #___________________________________
+    mapL = citibike["stationsL"]
+    OmapL = citibike["ordenadosL"]
+    listaL = m.keySet(mapL)
+    IterL = it.newIterator(listaL)
+    while it.hasNext(IterL):
+        i = it.next(IterL)
+        valorL = m.get(mapL, i)
+        om.put(OmapL, valorL["value"],valorL["key"])
+    #___________________________________
+    mapG = citibike["stationsG"]
+    OmapG = citibike["ordenadosG"]
+    listaG = m.keySet(mapG)
+    IterG = it.newIterator(listaG)
+    while it.hasNext(IterG):
+        i = it.next(IterG)
+        valorG = m.get(mapG, i)
+        om.put(OmapG, valorG["value"],valorG["key"])
 
 # ==============================
 # Funciones de consulta
@@ -158,6 +207,55 @@ def totalConnections(analyzer):
     Retorna el total arcos del grafo
     """
     return gr.numEdges(analyzer['graph'])
+
+def estacionS_criticas (analyzer):
+    Omap = analyzer["ordenadosS"]
+    Cont = 0
+    lista = lt.newList(datastructure="ARRAY_LIST")
+    while Cont != 3:
+        maximae = om.maxKey(Omap)
+        maximaE = om.get(Omap, maximae)
+        lt.addLast(lista,maximaE["value"])
+        om.deleteMax(Omap)
+        Cont += 1
+    f = str(lt.getElement(lista, 1))
+    s = str(lt.getElement(lista, 2))
+    t = str(lt.getElement(lista, 3))
+    R = f + ", " + s + ", " + t
+    return R
+
+def estacionL_criticas(analyzer):
+    Omap = analyzer["ordenadosL"]
+    Cont = 0
+    lista = lt.newList(datastructure="ARRAY_LIST")
+    while Cont != 3:
+        maximae = om.maxKey(Omap)
+        maximaE = om.get(Omap, maximae)
+        lt.addLast(lista,maximaE["value"])
+        om.deleteMax(Omap)
+        Cont += 1
+    f = str(lt.getElement(lista, 1))
+    s = str(lt.getElement(lista, 2))
+    t = str(lt.getElement(lista, 3))
+    R = f + ", " + s + ", " + t
+    return R
+
+def estacionG_criticas(analyzer):
+    Omap = analyzer["ordenadosG"]
+    Cont = 0
+    lista = lt.newList(datastructure="ARRAY_LIST")
+    while Cont != 3:
+        minimae = om.minKey(Omap)
+        minimaE = om.get(Omap, minimae)
+        lt.addLast(lista,minimaE["value"])
+        om.deleteMin(Omap)
+        Cont += 1
+    f = str(lt.getElement(lista, 1))
+    s = str(lt.getElement(lista, 2))
+    t = str(lt.getElement(lista, 3))
+    R = f + ", " + s + ", " + t
+    return R
+
 # ==============================
 # Funciones Helper
 # ==============================
@@ -174,6 +272,17 @@ def compareStopIds(stop, keyvaluestop):
     if (stop == stopcode):
         return 0
     elif (stop > stopcode):
+        return 1
+    else:
+        return -1
+
+def compareIds(id1, id2):
+    """
+    Compara dos crimenes
+    """
+    if (id1 == id2):
+        return 0
+    elif id1 > id2:
         return 1
     else:
         return -1
